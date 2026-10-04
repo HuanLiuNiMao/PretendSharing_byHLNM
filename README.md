@@ -1,87 +1,74 @@
-# PretendSharing Mod — Shizuku ActivityWatch 分享拦截
+# 假装分享 3.0 · HLNM 改版
 
-原 PretendSharing 3.0.0 的 mod 版，包名改为 `pub.chara.cwui.pretendsharing.HLNMovo`。
-核心改动：通过 Shizuku 注册 `IActivityController` 自动拦截微信/QQ/微博的分享 Intent，
-无需手动从分享菜单选择 PretendSharing。
+基于 chara 原作 [PretendSharing 3.0.0](https://bbs.binmt.cc/forum.php?mod=viewthread&tid=173902)，加了个 Shizuku 自动拦截，不用每次手动选分享菜单了。
 
-## 工作原理
+包名改成了 `pub.chara.cwui.pretendsharing.HLNMovo`，不会覆盖原版。
 
-### 1. 启动注册
-`PsApp.onCreate()` 调用 `ActivityWatch.start()` → 通过 Shizuku 获取 `IActivityManager` binder
-→ 反射调用 `setActivityController()` 注册一个伪装成 `android.app.IActivityController` 的 Binder。
+---
 
-### 2. 分享拦截
-每当其他 App（微信/QQ/微博）发起 `ACTION_SEND` 分享并启动系统分享菜单时，
-Android 系统会回调 `IActivityController.activityStarting()` → 我们的 `Controller.onTransact(code=1)`
-拦截该调用，提取原始 Intent 中的文字、类型等信息，构造一个目标为 `ShareGateActivity` 的新 Intent。
+## 跟原版的区别
 
-### 3. 重定向到 ShareGateActivity
-新 Intent 携带 `s_target`（来源标识：wechat/qq/weibo）和 `s_from`（原始调用包名）extra。
-`ShareGateActivity` 新增的 `cond_new_aw` 分支检测到这些 extra 后走 Path 2：
-设置 `fromHook=false`，跳过 Xposed hook 检测，直接 `setResult(RESULT_OK)` 返回——分享方收到"假成功"。
+原版得走 LSPosed hook，每次分享得从系统菜单里选"假装分享"。
+这个改版多了一条路：装上 Shizuku 以后，只要打开过一次授权，之后微信 / QQ / 微博里点分享就会自动跳到假装分享，不用再手动选。
 
-## 项目结构
+原理就是往系统里注册了一个假的 IActivityController，等到别的 App 切分享页的时候把它拦下来，换成跳我们的 ShareGateActivity。
+
+## 你需要准备
+
+- 一台 Android 设备，Android 7+ 都行
+- 原版 base APK（PretendSharing 3.0.0）
+- [Shizuku](https://shizuku.rikka.app/) 装好并启动
+- 如果要自己编译：Java 8、d8、smali / baksmali 工具链
+
+## 怎么装
+
+releases 里下 patched-final.apk，MT 管理器签个名，装上。
+
+装完打开 App → 设置里打开 Shizuku 模式 → 按提示授权 → 完事了。
+
+之后微信 / QQ / 微博点分享，就会自动走假装分享的流程。
+
+## 自己编译
+
+`build.sh` 一把梭：
 
 ```
-ps-mod/
-├── build.gradle          # IDE 支持（不作为实际构建入口）
-├── build.sh              # 一键构建脚本
-├── smali/                # 已打补丁的全部反编译 smali（1327 个文件）
-├── src/main/java/        # 新增 Java 源码
-│   └── pub/chara/cwui/pretend_sharing/shizuku/
-│       ├── ActivityWatch.java    # IActivityController 注册与拦截
-│       └── ShizukuHelper.java    # Shizuku 封装工具
-├── patches/              # smali 补丁说明
-│   └── README.md         # 两处 smali 改动的详细 diff
-├── libs/                 # 编译依赖
-│   ├── shizuku-api.jar   # Shizuku 13.x API stub
-│   └── xposed-api.jar    # Xposed API stub
-├── settings.gradle
-├── gradle.properties
-└── .gitignore
-```
-
-## Smali 补丁
-
-| 文件 | 位置 | 改动 |
-|------|------|------|
-| `PsApp.smali` | `onCreate()` 末尾 | 新增 `invoke-static {p0}, ActivityWatch;->start(Context)V` |
-| `ShareGateActivity.smali` | `parseIntent()` 方法中 | 新增 `:cond_new_aw` 分支，检测 `s_target` extra 走 Path 2 |
-
-详见 [`patches/README.md`](patches/README.md)。
-
-## 构建
-
-### 前置条件
-- `patched-final.apk` 或原始 APK 作为 base
-- `/sdcard/DeepSeekHarness/Tools/env.sh` 中配置的工具链（smali/baksmali/d8/aapt2/apksigner）
-
-### 一键构建
-```bash
 bash build.sh path/to/base.apk
 ```
 
-### 手动步骤
-1. `javac -cp $ANDROID_JAR:libs/* src/main/java/.../*.java` → `.class`
-2. `d8 *.class` → `classes.dex`
-3. `baksmali d classes.dex -o smali-new`
-4. `cp -r smali-new/* smali/`（覆盖 shizuku 包）
-5. `smali a smali -o classes.dex`
-6. `apk-repack base.apk classes.dex AndroidManifest.xml -o patched.apk`
-7. `apksigner sign patched.apk`
+它干了这些事：
+1. 编译 `src/main/java/` 下面新加的 Java 代码
+2. d8 转 dex → baksmali 拆成 smali
+3. 合并进原始的 smali 树（覆盖 shizuku 包）
+4. smali 拼回 classes.dex
+5. 用 apk-repack 塞进 APK
 
-## 签名
+编译完拿 MT 管理器签名就能装了。
 
-APK 需手动签名（MT 管理器或 apksigner）：
+## 项目结构
 
-```bash
-apksigner sign --ks your.keystore patched.apk
-```
+- `smali/` — 原版反编译的全部 smali，已经打过补丁
+- `src/main/java/.../shizuku/` — 新加的 Java 源文件
+  - `ActivityWatch.java` — 注册假 IActivityController，拦截分享
+  - `ShizukuHelper.java` — 封装 Shizuku 调用
+- `patches/` — smali 补丁详情
+- `build.sh` — 构建脚本
+- `build.gradle` — 仅限 IDE 用，不参与实际编译
 
-## 安全审查
+## Smali 补丁
 
-完整源码审计报告见仓库根目录的 `PretendSharing-3.0.0-源码安全审查报告.md`。
+就改了两处：
 
-## 许可证
+**PsApp.smali** — `onCreate()` 屁股后面加了一行，启动时调 `ActivityWatch.start()`
 
-本 mod 仅供学习研究使用。原 PretendSharing 版权归原作者所有。
+**ShareGateActivity.smali** — `parseIntent()` 里加了个 `cond_new_aw` 分支，检测 ActivityWatch 注入的 `s_target` extra，走一条新的假分享路径
+
+具体改动见 `patches/README.md`
+
+## 声明
+
+本仓库是 chara 原作的第三方改版。原始 smali 代码版权归原作者所有，新加的 Java 源码和脚本用 MIT 许可证。仅为学习交流，请勿商用。
+
+原作者帖子：[MT 论坛 — 假装分享 3.0](https://bbs.binmt.cc/forum.php?mod=viewthread&tid=173902)
+
+有问题提 issue。

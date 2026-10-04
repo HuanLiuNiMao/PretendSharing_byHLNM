@@ -18,6 +18,8 @@
 
 .field public static final REQUEST_CODE:I = 0x1072
 
+.field public static final SHARE_GATE_CLASS:Ljava/lang/String; = "pub.chara.cwui.pretend_sharing.ui.ShareGateActivity"
+
 .field public static final SHIZUKU_PKG:Ljava/lang/String; = "moe.shizuku.privileged.api"
 
 .field private static final TAG:Ljava/lang/String; = "ShizukuHelper"
@@ -31,47 +33,47 @@
 .method static constructor <clinit>()V
     .registers 1
 
-    .line 62
+    .line 65
     const/4 v0, 0x0
 
     sput-object v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
-    .line 63
+    .line 66
     return-void
 .end method
 
 .method private constructor <init>()V
     .registers 1
 
-    .line 66
+    .line 69
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 67
+    .line 70
     return-void
 .end method
 
 .method public static addBinderReceivedListener(Ljava/lang/Runnable;)Ljava/lang/Object;
     .registers 2
 
-    .line 286
+    .line 289
     :try_start_0
     new-instance v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$1;
 
     invoke-direct {v0, p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$1;-><init>(Ljava/lang/Runnable;)V
 
-    .line 292
+    .line 295
     invoke-static {v0}, Lrikka/shizuku/Shizuku;->addBinderReceivedListenerSticky(Lrikka/shizuku/Shizuku$OnBinderReceivedListener;)V
     :try_end_8
     .catchall {:try_start_0 .. :try_end_8} :catchall_9
 
-    .line 293
+    .line 296
     return-object v0
 
-    .line 294
+    .line 297
     :catchall_9
     move-exception p0
 
-    .line 295
+    .line 298
     const/4 p0, 0x0
 
     return-object p0
@@ -80,20 +82,20 @@
 .method public static addPermissionListener(Lrikka/shizuku/Shizuku$OnRequestPermissionResultListener;)V
     .registers 1
 
-    .line 318
+    .line 321
     :try_start_0
     invoke-static {p0}, Lrikka/shizuku/Shizuku;->addRequestPermissionResultListener(Lrikka/shizuku/Shizuku$OnRequestPermissionResultListener;)V
     :try_end_3
     .catchall {:try_start_0 .. :try_end_3} :catchall_4
 
-    .line 320
+    .line 323
     goto :goto_5
 
-    .line 319
+    .line 322
     :catchall_4
     move-exception p0
 
-    .line 321
+    .line 324
     :goto_5
     return-void
 .end method
@@ -101,7 +103,7 @@
 .method public static apiVersion()I
     .registers 1
 
-    .line 186
+    .line 189
     :try_start_0
     invoke-static {}, Lrikka/shizuku/Shizuku;->getVersion()I
 
@@ -111,11 +113,11 @@
 
     return v0
 
-    .line 187
+    .line 190
     :catchall_5
     move-exception v0
 
-    .line 188
+    .line 191
     const/4 v0, -0x1
 
     return v0
@@ -124,7 +126,7 @@
 .method public static asActivityManager()Ljava/lang/Object;
     .registers 8
 
-    .line 347
+    .line 350
     const/4 v0, 0x0
 
     :try_start_1
@@ -134,31 +136,31 @@
 
     move-result-object v1
 
-    .line 348
+    .line 351
     if-nez v1, :cond_e
 
-    .line 349
+    .line 352
     const-string v1, "activity service not found"
 
     sput-object v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
-    .line 350
+    .line 353
     return-object v0
 
-    .line 352
+    .line 355
     :cond_e
     new-instance v2, Lrikka/shizuku/ShizukuBinderWrapper;
 
     invoke-direct {v2, v1}, Lrikka/shizuku/ShizukuBinderWrapper;-><init>(Landroid/os/IBinder;)V
 
-    .line 353
+    .line 356
     const-string v1, "android.app.IActivityManager$Stub"
 
     invoke-static {v1}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
 
     move-result-object v1
 
-    .line 354
+    .line 357
     const-string v3, "asInterface"
 
     const/4 v4, 0x1
@@ -175,7 +177,7 @@
 
     move-result-object v1
 
-    .line 355
+    .line 358
     new-array v3, v4, [Ljava/lang/Object;
 
     aput-object v2, v3, v7
@@ -188,11 +190,11 @@
 
     return-object v0
 
-    .line 356
+    .line 359
     :catchall_30
     move-exception v1
 
-    .line 357
+    .line 360
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -217,7 +219,7 @@
 
     sput-object v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
-    .line 358
+    .line 361
     return-object v0
 .end method
 
@@ -229,29 +231,29 @@
         }
     .end annotation
 
-    .line 369
+    .line 372
     const-string v0, "package"
 
     invoke-static {v0}, Lrikka/shizuku/SystemServiceHelper;->getSystemService(Ljava/lang/String;)Landroid/os/IBinder;
 
     move-result-object v0
 
-    .line 370
+    .line 373
     if-eqz v0, :cond_2b
 
-    .line 373
+    .line 376
     new-instance v1, Lrikka/shizuku/ShizukuBinderWrapper;
 
     invoke-direct {v1, v0}, Lrikka/shizuku/ShizukuBinderWrapper;-><init>(Landroid/os/IBinder;)V
 
-    .line 374
+    .line 377
     const-string v0, "android.content.pm.IPackageManager$Stub"
 
     invoke-static {v0}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
 
     move-result-object v0
 
-    .line 376
+    .line 379
     const/4 v2, 0x1
 
     new-array v3, v2, [Ljava/lang/Class;
@@ -268,7 +270,7 @@
 
     move-result-object v0
 
-    .line 377
+    .line 380
     new-array v2, v2, [Ljava/lang/Object;
 
     aput-object v1, v2, v5
@@ -281,7 +283,7 @@
 
     return-object v0
 
-    .line 371
+    .line 374
     :cond_2b
     new-instance v0, Ljava/lang/IllegalStateException;
 
@@ -295,7 +297,7 @@
 .method private static buildActivitySet(Landroid/content/Context;Landroid/content/IntentFilter;Landroid/content/ComponentName;)[Landroid/content/ComponentName;
     .registers 10
 
-    .line 790
+    .line 793
     const/4 v0, 0x1
 
     const/4 v1, 0x0
@@ -305,21 +307,21 @@
 
     invoke-direct {v2}, Landroid/content/Intent;-><init>()V
 
-    .line 791
+    .line 794
     invoke-virtual {p1}, Landroid/content/IntentFilter;->countActions()I
 
     move-result v3
 
     if-lez v3, :cond_14
 
-    .line 792
+    .line 795
     invoke-virtual {p1, v1}, Landroid/content/IntentFilter;->getAction(I)Ljava/lang/String;
 
     move-result-object v3
 
     invoke-virtual {v2, v3}, Landroid/content/Intent;->setAction(Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 794
+    .line 797
     :cond_14
     const/4 v3, 0x0
 
@@ -330,19 +332,19 @@
 
     if-ge v3, v4, :cond_25
 
-    .line 795
+    .line 798
     invoke-virtual {p1, v3}, Landroid/content/IntentFilter;->getCategory(I)Ljava/lang/String;
 
     move-result-object v4
 
     invoke-virtual {v2, v4}, Landroid/content/Intent;->addCategory(Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 794
+    .line 797
     add-int/lit8 v3, v3, 0x1
 
     goto :goto_15
 
-    .line 797
+    .line 800
     :cond_25
     invoke-virtual {p1}, Landroid/content/IntentFilter;->countDataSchemes()I
 
@@ -350,12 +352,12 @@
 
     if-lez v3, :cond_49
 
-    .line 798
+    .line 801
     invoke-virtual {p1, v1}, Landroid/content/IntentFilter;->getDataScheme(I)Ljava/lang/String;
 
     move-result-object v3
 
-    .line 799
+    .line 802
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
@@ -380,7 +382,7 @@
 
     invoke-virtual {v2, v3}, Landroid/content/Intent;->setData(Landroid/net/Uri;)Landroid/content/Intent;
 
-    .line 801
+    .line 804
     :cond_49
     invoke-virtual {p1}, Landroid/content/IntentFilter;->countDataTypes()I
 
@@ -388,12 +390,12 @@
 
     if-lez v3, :cond_5e
 
-    .line 802
+    .line 805
     invoke-virtual {p1, v1}, Landroid/content/IntentFilter;->getDataType(I)Ljava/lang/String;
 
     move-result-object p1
 
-    .line 803
+    .line 806
     if-eqz p1, :cond_5e
 
     invoke-virtual {v2}, Landroid/content/Intent;->getType()Ljava/lang/String;
@@ -402,23 +404,23 @@
 
     if-nez v3, :cond_5e
 
-    .line 804
+    .line 807
     invoke-virtual {v2, p1}, Landroid/content/Intent;->setType(Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 808
+    .line 811
     :cond_5e
     invoke-virtual {p0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
     move-result-object p0
 
-    .line 809
+    .line 812
     const/high16 p1, 0x10000
 
     invoke-virtual {p0, v2, p1}, Landroid/content/pm/PackageManager;->queryIntentActivities(Landroid/content/Intent;I)Ljava/util/List;
 
     move-result-object p0
 
-    .line 811
+    .line 814
     if-eqz p0, :cond_91
 
     invoke-interface {p0}, Ljava/util/List;->isEmpty()Z
@@ -429,7 +431,7 @@
 
     goto :goto_91
 
-    .line 815
+    .line 818
     :cond_71
     invoke-interface {p0}, Ljava/util/List;->size()I
 
@@ -437,13 +439,13 @@
 
     new-array v2, p1, [Landroid/content/ComponentName;
 
-    .line 816
+    .line 819
     const/4 v3, 0x0
 
     :goto_78
     if-ge v3, p1, :cond_90
 
-    .line 817
+    .line 820
     invoke-interface {p0, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
     move-result-object v4
@@ -452,7 +454,7 @@
 
     iget-object v4, v4, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
 
-    .line 818
+    .line 821
     new-instance v5, Landroid/content/ComponentName;
 
     iget-object v6, v4, Landroid/content/pm/ActivityInfo;->packageName:Ljava/lang/String;
@@ -463,16 +465,16 @@
 
     aput-object v5, v2, v3
 
-    .line 816
+    .line 819
     add-int/lit8 v3, v3, 0x1
 
     goto :goto_78
 
-    .line 820
+    .line 823
     :cond_90
     return-object v2
 
-    .line 812
+    .line 815
     :cond_91
     :goto_91
     new-array p0, v0, [Landroid/content/ComponentName;
@@ -483,11 +485,11 @@
 
     return-object p0
 
-    .line 821
+    .line 824
     :catchall_96
     move-exception p0
 
-    .line 822
+    .line 825
     new-array p0, v0, [Landroid/content/ComponentName;
 
     aput-object p2, p0, v1
@@ -498,7 +500,7 @@
 .method public static clearPreferredShareTarget(Landroid/content/Context;)Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
     .registers 8
 
-    .line 495
+    .line 498
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->isRunning()Z
 
     move-result v0
@@ -507,7 +509,7 @@
 
     if-nez v0, :cond_f
 
-    .line 496
+    .line 499
     new-instance p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
     const-string v0, "Shizuku \u672a\u8fd0\u884c"
@@ -516,7 +518,7 @@
 
     return-object p0
 
-    .line 498
+    .line 501
     :cond_f
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->hasPermission()Z
 
@@ -524,7 +526,7 @@
 
     if-nez v0, :cond_1d
 
-    .line 499
+    .line 502
     new-instance p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
     const-string v0, "\u5c1a\u672a\u6388\u6743"
@@ -533,21 +535,21 @@
 
     return-object p0
 
-    .line 502
+    .line 505
     :cond_1d
     :try_start_1d
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->asPackageManager()Ljava/lang/Object;
 
     move-result-object v0
 
-    .line 503
+    .line 506
     const-string v2, "android.content.pm.IPackageManager"
 
     invoke-static {v2}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
 
     move-result-object v2
 
-    .line 505
+    .line 508
     const-string v3, "clearPackagePreferredActivities"
 
     const/4 v4, 0x1
@@ -562,7 +564,7 @@
 
     move-result-object v2
 
-    .line 507
+    .line 510
     new-array v3, v4, [Ljava/lang/Object;
 
     invoke-virtual {p0}, Landroid/content/Context;->getPackageName()Ljava/lang/String;
@@ -573,7 +575,7 @@
 
     invoke-virtual {v2, v0, v3}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 508
+    .line 511
     new-instance p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
     const-string v0, "ok"
@@ -584,11 +586,11 @@
 
     return-object p0
 
-    .line 509
+    .line 512
     :catchall_47
     move-exception p0
 
-    .line 510
+    .line 513
     new-instance v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
     invoke-static {p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->rootCause(Ljava/lang/Throwable;)Ljava/lang/String;
@@ -603,24 +605,24 @@
 .method public static diagnose(Landroid/content/Context;)Ljava/lang/String;
     .registers 5
 
-    .line 659
+    .line 662
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 660
+    .line 663
     const-string v1, "PretendSharing \u8bca\u65ad\n"
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 661
+    .line 664
     const-string v1, "\u7ba1\u7406\u5668\u7248\u672c: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v1
 
-    .line 662
+    .line 665
     invoke-static {p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->managerVersion(Landroid/content/Context;)Ljava/lang/String;
 
     move-result-object v2
@@ -635,12 +637,12 @@
 
     move-result-object v1
 
-    .line 663
+    .line 666
     const/16 v2, 0xa
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 664
+    .line 667
     const-string v1, "\u670d\u52a1\u8fd0\u884c: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -655,10 +657,10 @@
 
     move-result-object v1
 
-    .line 665
+    .line 668
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 666
+    .line 669
     const-string v1, "API \u7248\u672c: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -673,10 +675,10 @@
 
     move-result-object v1
 
-    .line 667
+    .line 670
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 670
+    .line 673
     :try_start_45
     const-string v1, "isPreV11: "
 
@@ -692,26 +694,26 @@
 
     move-result-object v1
 
-    .line 671
+    .line 674
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
     :try_end_56
     .catchall {:try_start_45 .. :try_end_56} :catchall_57
 
-    .line 675
+    .line 678
     goto :goto_69
 
-    .line 672
+    .line 675
     :catchall_57
     move-exception v1
 
-    .line 673
+    .line 676
     const-string v3, "isPreV11: \u5f02\u5e38 "
 
     invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v3
 
-    .line 674
+    .line 677
     invoke-static {v1}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->rootCause(Ljava/lang/Throwable;)Ljava/lang/String;
 
     move-result-object v1
@@ -722,7 +724,7 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 679
+    .line 682
     :goto_69
     :try_start_69
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->hasPermission()Z
@@ -731,17 +733,17 @@
     :try_end_6d
     .catchall {:try_start_69 .. :try_end_6d} :catchall_6e
 
-    .line 682
+    .line 685
     goto :goto_70
 
-    .line 680
+    .line 683
     :catchall_6e
     move-exception v1
 
-    .line 681
+    .line 684
     const/4 v1, 0x0
 
-    .line 683
+    .line 686
     :goto_70
     const-string v3, "\u5df2\u6388\u6743: "
 
@@ -755,7 +757,7 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 684
+    .line 687
     const-string v1, "\u8fd0\u884c\u8eab\u4efd: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -770,17 +772,17 @@
 
     move-result-object v1
 
-    .line 685
+    .line 688
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 686
+    .line 689
     const-string v1, "\u63a5\u7ba1\u72b6\u6001: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v1
 
-    .line 687
+    .line 690
     invoke-static {p0}, Lpub/chara/cwui/pretend_sharing/core/Prefs;->takeover(Landroid/content/Context;)Z
 
     move-result v3
@@ -791,7 +793,7 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 690
+    .line 693
     :try_start_9f
     const-string v1, "QQ \u901a\u9053: "
 
@@ -799,7 +801,7 @@
 
     move-result-object v1
 
-    .line 691
+    .line 694
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->qqProbe()Landroid/content/Intent;
 
     move-result-object v3
@@ -814,14 +816,14 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 692
+    .line 695
     const-string v1, "\u5fae\u4fe1\u901a\u9053: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v1
 
-    .line 693
+    .line 696
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->wechatProbe()Landroid/content/Intent;
 
     move-result-object v3
@@ -836,14 +838,14 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 694
+    .line 697
     const-string v1, "\u901a\u7528\u901a\u9053: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v1
 
-    .line 695
+    .line 698
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->sendProbe()Landroid/content/Intent;
 
     move-result-object v3
@@ -860,21 +862,21 @@
     :try_end_de
     .catchall {:try_start_9f .. :try_end_de} :catchall_df
 
-    .line 699
+    .line 702
     goto :goto_f1
 
-    .line 696
+    .line 699
     :catchall_df
     move-exception p0
 
-    .line 697
+    .line 700
     const-string v1, "\u901a\u9053\u63a2\u6d4b\u5f02\u5e38: "
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v1
 
-    .line 698
+    .line 701
     invoke-static {p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->rootCause(Ljava/lang/Throwable;)Ljava/lang/String;
 
     move-result-object p0
@@ -885,7 +887,7 @@
 
     invoke-virtual {p0, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 701
+    .line 704
     :goto_f1
     const-string p0, "\u6700\u8fd1\u9519\u8bef: "
 
@@ -895,7 +897,7 @@
 
     sget-object v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
-    .line 702
+    .line 705
     const-string v3, "\u65e0"
 
     invoke-static {v1, v3}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->nullTo(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
@@ -908,7 +910,7 @@
 
     invoke-virtual {p0, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 703
+    .line 706
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object p0
@@ -919,7 +921,7 @@
 .method public static execShizuku(Ljava/lang/String;)V
     .registers 9
 
-    .line 394
+    .line 397
     :try_start_0
     const-class v0, Lrikka/shizuku/Shizuku;
 
@@ -951,10 +953,10 @@
 
     move-result-object v0
 
-    .line 396
+    .line 399
     invoke-virtual {v0, v6}, Ljava/lang/reflect/Method;->setAccessible(Z)V
 
-    .line 397
+    .line 400
     new-array v1, v2, [Ljava/lang/Object;
 
     new-array v2, v2, [Ljava/lang/String;
@@ -981,14 +983,14 @@
     :try_end_35
     .catchall {:try_start_0 .. :try_end_35} :catchall_36
 
-    .line 403
+    .line 406
     goto :goto_53
 
-    .line 401
+    .line 404
     :catchall_36
     move-exception p0
 
-    .line 402
+    .line 405
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1015,7 +1017,7 @@
 
     invoke-static {v0, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 404
+    .line 407
     :goto_53
     return-void
 .end method
@@ -1023,7 +1025,7 @@
 .method public static hasPermission()Z
     .registers 4
 
-    .line 230
+    .line 233
     const/4 v0, 0x0
 
     :try_start_1
@@ -1037,7 +1039,7 @@
 
     return v2
 
-    .line 231
+    .line 234
     :cond_9
     invoke-static {}, Lrikka/shizuku/Shizuku;->checkSelfPermission()I
 
@@ -1052,11 +1054,11 @@
     :cond_10
     return v0
 
-    .line 232
+    .line 235
     :catchall_11
     move-exception v1
 
-    .line 233
+    .line 236
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -1081,14 +1083,14 @@
 
     sput-object v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
-    .line 234
+    .line 237
     return v0
 .end method
 
 .method public static isInstalled(Landroid/content/Context;)Z
     .registers 1
 
-    .line 196
+    .line 199
     invoke-static {p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->managerVersion(Landroid/content/Context;)Ljava/lang/String;
 
     move-result-object p0
@@ -1109,7 +1111,7 @@
 .method public static isPreferred(Landroid/content/Context;Ljava/lang/String;Landroid/content/IntentFilter;)Z
     .registers 3
 
-    .line 517
+    .line 520
     const/4 p0, 0x0
 
     return p0
@@ -1118,7 +1120,7 @@
 .method public static isRunning()Z
     .registers 3
 
-    .line 218
+    .line 221
     :try_start_0
     invoke-static {}, Lrikka/shizuku/Shizuku;->pingBinder()Z
 
@@ -1128,11 +1130,11 @@
 
     return v0
 
-    .line 219
+    .line 222
     :catchall_5
     move-exception v0
 
-    .line 220
+    .line 223
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1157,7 +1159,7 @@
 
     sput-object v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
-    .line 221
+    .line 224
     const/4 v0, 0x0
 
     return v0
@@ -1166,7 +1168,7 @@
 .method public static managerVersion(Landroid/content/Context;)Ljava/lang/String;
     .registers 3
 
-    .line 205
+    .line 208
     :try_start_0
     invoke-virtual {p0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
@@ -1174,25 +1176,25 @@
 
     const-string v0, "moe.shizuku.privileged.api"
 
-    .line 206
+    .line 209
     const/4 v1, 0x0
 
     invoke-virtual {p0, v0, v1}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
 
     move-result-object p0
 
-    .line 207
+    .line 210
     iget-object p0, p0, Landroid/content/pm/PackageInfo;->versionName:Ljava/lang/String;
     :try_end_d
     .catchall {:try_start_0 .. :try_end_d} :catchall_e
 
     return-object p0
 
-    .line 208
+    .line 211
     :catchall_e
     move-exception p0
 
-    .line 209
+    .line 212
     const/4 p0, 0x0
 
     return-object p0
@@ -1201,7 +1203,7 @@
 .method private static nullTo(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
     .registers 2
 
-    .line 759
+    .line 762
     if-eqz p0, :cond_3
 
     goto :goto_4
@@ -1216,7 +1218,7 @@
 .method public static openShizuku(Landroid/content/Context;)V
     .registers 3
 
-    .line 589
+    .line 592
     :try_start_0
     invoke-virtual {p0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
@@ -1224,33 +1226,33 @@
 
     const-string v1, "moe.shizuku.privileged.api"
 
-    .line 590
+    .line 593
     invoke-virtual {v0, v1}, Landroid/content/pm/PackageManager;->getLaunchIntentForPackage(Ljava/lang/String;)Landroid/content/Intent;
 
     move-result-object v0
 
-    .line 591
+    .line 594
     if-eqz v0, :cond_14
 
-    .line 592
+    .line 595
     const/high16 v1, 0x10000000
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
-    .line 593
+    .line 596
     invoke-virtual {p0, v0}, Landroid/content/Context;->startActivity(Landroid/content/Intent;)V
     :try_end_14
     .catchall {:try_start_0 .. :try_end_14} :catchall_15
 
-    .line 596
+    .line 599
     :cond_14
     goto :goto_16
 
-    .line 595
+    .line 598
     :catchall_15
     move-exception p0
 
-    .line 597
+    .line 600
     :goto_16
     return-void
 .end method
@@ -1258,19 +1260,19 @@
 .method private static ownerLabel(Landroid/content/Context;Landroid/content/Intent;)Ljava/lang/String;
     .registers 2
 
-    .line 649
+    .line 652
     invoke-static {p0, p1}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->resolveOwner(Landroid/content/Context;Landroid/content/Intent;)Ljava/lang/String;
 
     move-result-object p1
 
-    .line 650
+    .line 653
     if-nez p1, :cond_9
 
     const-string p0, "\u65e0\u4eba\u63a5\u7ba1"
 
     return-object p0
 
-    .line 651
+    .line 654
     :cond_9
     invoke-virtual {p0}, Landroid/content/Context;->getPackageName()Ljava/lang/String;
 
@@ -1286,7 +1288,7 @@
 
     return-object p0
 
-    .line 652
+    .line 655
     :cond_16
     new-instance p0, Ljava/lang/StringBuilder;
 
@@ -1312,10 +1314,10 @@
 .method public static qqProbe()Landroid/content/Intent;
     .registers 3
 
-    .line 605
+    .line 608
     new-instance v0, Landroid/content/Intent;
 
-    .line 606
+    .line 609
     const-string v1, "mqqapi://share/to_fri?src_type=app&version=1"
 
     invoke-static {v1}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
@@ -1326,31 +1328,31 @@
 
     invoke-direct {v0, v2, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;Landroid/net/Uri;)V
 
-    .line 607
+    .line 610
     const-string v1, "android.intent.category.BROWSABLE"
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->addCategory(Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 608
+    .line 611
     const-string v1, "android.intent.category.DEFAULT"
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->addCategory(Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 609
+    .line 612
     return-object v0
 .end method
 
 .method private static register(Landroid/content/Context;Landroid/content/IntentFilter;Ljava/lang/String;Ljava/lang/String;)Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;
     .registers 22
 
-    .line 839
+    .line 842
     move-object/from16 v0, p1
 
     move-object/from16 v1, p3
 
     new-instance v2, Landroid/content/ComponentName;
 
-    .line 840
+    .line 843
     invoke-virtual/range {p0 .. p0}, Landroid/content/Context;->getPackageName()Ljava/lang/String;
 
     move-result-object v3
@@ -1359,24 +1361,24 @@
 
     invoke-direct {v2, v3, v4}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 841
+    .line 844
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->userId()I
 
     move-result v3
 
-    .line 842
+    .line 845
     move-object/from16 v4, p0
 
     invoke-static {v4, v0, v2}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->buildActivitySet(Landroid/content/Context;Landroid/content/IntentFilter;Landroid/content/ComponentName;)[Landroid/content/ComponentName;
 
     move-result-object v4
 
-    .line 844
+    .line 847
     new-instance v11, Ljava/lang/StringBuilder;
 
     invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 846
+    .line 849
     const/4 v12, 0x0
 
     :try_start_1f
@@ -1384,14 +1386,14 @@
 
     move-result-object v5
 
-    .line 847
+    .line 850
     const-string v6, "android.content.pm.IPackageManager"
 
     invoke-static {v6}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
 
     move-result-object v6
 
-    .line 850
+    .line 853
     const-string v7, "addPreferredActivity"
 
     const/4 v8, 0x6
@@ -1436,7 +1438,7 @@
 
     aput-object v0, v10, v12
 
-    .line 860
+    .line 863
     const/high16 v0, 0x10000
 
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -1449,7 +1451,7 @@
 
     aput-object v2, v10, v15
 
-    .line 863
+    .line 866
     invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v0
@@ -1460,17 +1462,17 @@
 
     aput-object v0, v10, v17
 
-    .line 850
+    .line 853
     move-object v8, v11
 
     invoke-static/range {v5 .. v10}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->tryInvoke(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/String;Ljava/lang/StringBuilder;[Ljava/lang/Class;[Ljava/lang/Object;)Z
 
     move-result v0
 
-    .line 865
+    .line 868
     if-eqz v0, :cond_75
 
-    .line 866
+    .line 869
     new-instance v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;
 
     const/4 v2, 0x0
@@ -1481,15 +1483,15 @@
 
     return-object v0
 
-    .line 870
+    .line 873
     :cond_75
     goto :goto_8a
 
-    .line 868
+    .line 871
     :catchall_76
     move-exception v0
 
-    .line 869
+    .line 872
     const-string v2, "prepare: "
 
     invoke-virtual {v11, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -1508,7 +1510,7 @@
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 872
+    .line 875
     :goto_8a
     new-instance v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;
 
@@ -1528,24 +1530,24 @@
 .method public static registerShareTargets(Landroid/content/Context;)Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;
     .registers 9
 
-    .line 418
+    .line 421
     new-instance v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;
 
     invoke-direct {v0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;-><init>()V
 
-    .line 421
+    .line 424
     new-instance v1, Landroid/content/IntentFilter;
 
     const-string v2, "android.intent.action.SEND"
 
     invoke-direct {v1, v2}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    .line 422
+    .line 425
     const-string v2, "android.intent.category.DEFAULT"
 
     invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addCategory(Ljava/lang/String;)V
 
-    .line 424
+    .line 427
     :try_start_11
     const-string v3, "*/*"
 
@@ -1553,14 +1555,14 @@
     :try_end_16
     .catchall {:try_start_11 .. :try_end_16} :catchall_17
 
-    .line 427
+    .line 430
     goto :goto_18
 
-    .line 425
+    .line 428
     :catchall_17
     move-exception v3
 
-    .line 428
+    .line 431
     :goto_18
     iget-object v3, v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->channels:Ljava/util/List;
 
@@ -1574,27 +1576,27 @@
 
     invoke-interface {v3, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 433
+    .line 436
     new-instance v1, Landroid/content/IntentFilter;
 
     const-string v3, "android.intent.action.VIEW"
 
     invoke-direct {v1, v3}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    .line 434
+    .line 437
     invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addCategory(Ljava/lang/String;)V
 
-    .line 435
+    .line 438
     const-string v4, "android.intent.category.BROWSABLE"
 
     invoke-virtual {v1, v4}, Landroid/content/IntentFilter;->addCategory(Ljava/lang/String;)V
 
-    .line 436
+    .line 439
     const-string v5, "mqqapi"
 
     invoke-virtual {v1, v5}, Landroid/content/IntentFilter;->addDataScheme(Ljava/lang/String;)V
 
-    .line 437
+    .line 440
     iget-object v5, v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->channels:Ljava/util/List;
 
     const-string v6, "pub.chara.cwui.pretend_sharing.gate.QqGateActivity"
@@ -1607,23 +1609,23 @@
 
     invoke-interface {v5, v1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 441
+    .line 444
     new-instance v1, Landroid/content/IntentFilter;
 
     invoke-direct {v1, v3}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
 
-    .line 442
+    .line 445
     invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addCategory(Ljava/lang/String;)V
 
-    .line 443
+    .line 446
     invoke-virtual {v1, v4}, Landroid/content/IntentFilter;->addCategory(Ljava/lang/String;)V
 
-    .line 444
+    .line 447
     const-string v2, "weixin"
 
     invoke-virtual {v1, v2}, Landroid/content/IntentFilter;->addDataScheme(Ljava/lang/String;)V
 
-    .line 445
+    .line 448
     iget-object v2, v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->channels:Ljava/util/List;
 
     const-string v3, "pub.chara.cwui.pretend_sharing.gate.WechatGateActivity"
@@ -1636,14 +1638,14 @@
 
     invoke-interface {v2, p0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
 
-    .line 448
+    .line 451
     return-object v0
 .end method
 
 .method public static relaxBackgroundRestrictions(Landroid/content/Context;)Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
     .registers 9
 
-    .line 541
+    .line 544
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->isRunning()Z
 
     move-result v0
@@ -1652,7 +1654,7 @@
 
     if-nez v0, :cond_f
 
-    .line 542
+    .line 545
     new-instance p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
     const-string v0, "Shizuku \u672a\u8fd0\u884c"
@@ -1661,7 +1663,7 @@
 
     return-object p0
 
-    .line 544
+    .line 547
     :cond_f
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->hasPermission()Z
 
@@ -1669,7 +1671,7 @@
 
     if-nez v0, :cond_1d
 
-    .line 545
+    .line 548
     new-instance p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
     const-string v0, "\u5c1a\u672a\u6388\u6743"
@@ -1678,18 +1680,18 @@
 
     return-object p0
 
-    .line 548
+    .line 551
     :cond_1d
     invoke-virtual {p0}, Landroid/content/Context;->getPackageName()Ljava/lang/String;
 
     move-result-object p0
 
-    .line 549
+    .line 552
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 550
+    .line 553
     const-string v2, "dumpsys deviceidle whitelist +"
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -1700,7 +1702,7 @@
 
     move-result-object v0
 
-    .line 551
+    .line 554
     const-string v2, ";cmd appops set "
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -1711,14 +1713,14 @@
 
     move-result-object v0
 
-    .line 552
+    .line 555
     const-string v2, " RUN_IN_BACKGROUND allow;"
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v0
 
-    .line 553
+    .line 556
     const-string v2, "cmd appops set "
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -1729,26 +1731,26 @@
 
     move-result-object p0
 
-    .line 554
+    .line 557
     const-string v0, " RUN_ANY_IN_BACKGROUND allow;"
 
     invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object p0
 
-    .line 555
+    .line 558
     const-string v0, "echo DONE"
 
     invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object p0
 
-    .line 556
+    .line 559
     invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object p0
 
-    .line 559
+    .line 562
     :try_start_5a
     const-class v0, Lrikka/shizuku/Shizuku;
 
@@ -1778,10 +1780,10 @@
 
     move-result-object v0
 
-    .line 561
+    .line 564
     invoke-virtual {v0, v6}, Ljava/lang/reflect/Method;->setAccessible(Z)V
 
-    .line 562
+    .line 565
     new-array v2, v3, [Ljava/lang/Object;
 
     new-array v3, v3, [Ljava/lang/String;
@@ -1810,10 +1812,10 @@
     :try_end_8f
     .catchall {:try_start_5a .. :try_end_8f} :catchall_ac
 
-    .line 566
+    .line 569
     if-eqz p0, :cond_a4
 
-    .line 569
+    .line 572
     :try_start_91
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -1827,7 +1829,7 @@
 
     move-result-object v0
 
-    .line 570
+    .line 573
     new-array v2, v1, [Ljava/lang/Object;
 
     invoke-virtual {v0, p0, v2}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
@@ -1835,14 +1837,14 @@
     .catch Ljava/lang/Exception; {:try_start_91 .. :try_end_a2} :catch_a3
     .catchall {:try_start_91 .. :try_end_a2} :catchall_ac
 
-    .line 572
+    .line 575
     goto :goto_a4
 
-    .line 571
+    .line 574
     :catch_a3
     move-exception p0
 
-    .line 574
+    .line 577
     :cond_a4
     :goto_a4
     :try_start_a4
@@ -1856,11 +1858,11 @@
 
     return-object p0
 
-    .line 575
+    .line 578
     :catchall_ac
     move-exception p0
 
-    .line 576
+    .line 579
     new-instance v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
     invoke-static {p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->rootCause(Ljava/lang/Throwable;)Ljava/lang/String;
@@ -1875,28 +1877,28 @@
 .method public static removeBinderReceivedListener(Ljava/lang/Object;)V
     .registers 2
 
-    .line 305
+    .line 308
     :try_start_0
     instance-of v0, p0, Lrikka/shizuku/Shizuku$OnBinderReceivedListener;
 
     if-eqz v0, :cond_9
 
-    .line 306
+    .line 309
     check-cast p0, Lrikka/shizuku/Shizuku$OnBinderReceivedListener;
 
     invoke-static {p0}, Lrikka/shizuku/Shizuku;->removeBinderReceivedListener(Lrikka/shizuku/Shizuku$OnBinderReceivedListener;)Z
     :try_end_9
     .catchall {:try_start_0 .. :try_end_9} :catchall_a
 
-    .line 311
+    .line 314
     :cond_9
     goto :goto_b
 
-    .line 309
+    .line 312
     :catchall_a
     move-exception p0
 
-    .line 312
+    .line 315
     :goto_b
     return-void
 .end method
@@ -1904,20 +1906,20 @@
 .method public static removePermissionListener(Lrikka/shizuku/Shizuku$OnRequestPermissionResultListener;)V
     .registers 1
 
-    .line 327
+    .line 330
     :try_start_0
     invoke-static {p0}, Lrikka/shizuku/Shizuku;->removeRequestPermissionResultListener(Lrikka/shizuku/Shizuku$OnRequestPermissionResultListener;)Z
     :try_end_3
     .catchall {:try_start_0 .. :try_end_3} :catchall_4
 
-    .line 329
+    .line 332
     goto :goto_5
 
-    .line 328
+    .line 331
     :catchall_4
     move-exception p0
 
-    .line 330
+    .line 333
     :goto_5
     return-void
 .end method
@@ -1925,7 +1927,7 @@
 .method public static requestPermission()Ljava/lang/String;
     .registers 3
 
-    .line 245
+    .line 248
     :try_start_0
     invoke-static {}, Lrikka/shizuku/Shizuku;->pingBinder()Z
 
@@ -1933,32 +1935,32 @@
 
     if-nez v0, :cond_9
 
-    .line 246
+    .line 249
     const-string v0, "Shizuku \u670d\u52a1\u5c1a\u672a\u542f\u52a8\uff1a\u8bf7\u5148\u6253\u5f00 Shizuku \u5e94\u7528\uff0c\u901a\u8fc7\u300c\u65e0\u7ebf\u8c03\u8bd5\u300d\u6216 Root \u542f\u52a8\u670d\u52a1\u540e\u518d\u56de\u6765\u70b9\u300c\u7533\u8bf7\u6388\u6743\u300d\u3002\n\n\u82e5\u670d\u52a1\u5df2\u5728\u8fd0\u884c\uff0c\u8bf7\u628a Shizuku \u670d\u52a1\u5f7b\u5e95\u91cd\u542f\u4e00\u6b21\uff08Shizuku \u5e94\u7528\u5185\u300c\u505c\u6b62\u300d\u518d\u300c\u542f\u52a8\u300d\uff09\uff0c\u8ba9\u7ba1\u7406\u5668\u91cd\u65b0\u5411\u672c\u5e94\u7528\u4e0b\u53d1 Binder\u3002"
 
     return-object v0
 
-    .line 258
+    .line 261
     :cond_9
     const/4 v0, 0x0
 
     sput-object v0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
-    .line 259
+    .line 262
     const/16 v1, 0x1072
 
     invoke-static {v1}, Lrikka/shizuku/Shizuku;->requestPermission(I)V
     :try_end_11
     .catchall {:try_start_0 .. :try_end_11} :catchall_12
 
-    .line 260
+    .line 263
     return-object v0
 
-    .line 261
+    .line 264
     :catchall_12
     move-exception v0
 
-    .line 262
+    .line 265
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1983,7 +1985,7 @@
 
     sput-object v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
-    .line 263
+    .line 266
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -1994,7 +1996,7 @@
 
     move-result-object v1
 
-    .line 264
+    .line 267
     invoke-static {v0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->rootCause(Ljava/lang/Throwable;)Ljava/lang/String;
 
     move-result-object v0
@@ -2013,14 +2015,14 @@
 
     move-result-object v0
 
-    .line 263
+    .line 266
     return-object v0
 .end method
 
 .method public static resolveOwner(Landroid/content/Context;Landroid/content/Intent;)Ljava/lang/String;
     .registers 4
 
-    .line 636
+    .line 639
     const/4 v0, 0x0
 
     :try_start_1
@@ -2028,14 +2030,14 @@
 
     move-result-object p0
 
-    .line 637
+    .line 640
     const/high16 v1, 0x10000
 
     invoke-virtual {p0, p1, v1}, Landroid/content/pm/PackageManager;->resolveActivity(Landroid/content/Intent;I)Landroid/content/pm/ResolveInfo;
 
     move-result-object p0
 
-    .line 638
+    .line 641
     if-eqz p0, :cond_17
 
     iget-object p1, p0, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
@@ -2044,7 +2046,7 @@
 
     goto :goto_17
 
-    .line 639
+    .line 642
     :cond_12
     iget-object p0, p0, Landroid/content/pm/ResolveInfo;->activityInfo:Landroid/content/pm/ActivityInfo;
 
@@ -2054,23 +2056,23 @@
 
     return-object p0
 
-    .line 638
+    .line 641
     :cond_17
     :goto_17
     return-object v0
 
-    .line 640
+    .line 643
     :catchall_18
     move-exception p0
 
-    .line 641
+    .line 644
     return-object v0
 .end method
 
 .method private static rootCause(Ljava/lang/Throwable;)Ljava/lang/String;
     .registers 3
 
-    .line 748
+    .line 751
     nop
 
     :goto_1
@@ -2080,14 +2082,14 @@
 
     if-eqz v0, :cond_c
 
-    .line 749
+    .line 752
     invoke-virtual {p0}, Ljava/lang/Throwable;->getCause()Ljava/lang/Throwable;
 
     move-result-object p0
 
     goto :goto_1
 
-    .line 751
+    .line 754
     :cond_c
     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
@@ -2097,17 +2099,17 @@
 
     move-result-object v0
 
-    .line 752
+    .line 755
     invoke-virtual {p0}, Ljava/lang/Throwable;->getMessage()Ljava/lang/String;
 
     move-result-object p0
 
-    .line 753
+    .line 756
     if-nez p0, :cond_1b
 
     return-object v0
 
-    .line 754
+    .line 757
     :cond_1b
     new-instance v1, Ljava/lang/StringBuilder;
 
@@ -2137,26 +2139,26 @@
 .method public static sendProbe()Landroid/content/Intent;
     .registers 2
 
-    .line 623
+    .line 626
     new-instance v0, Landroid/content/Intent;
 
     const-string v1, "android.intent.action.SEND"
 
     invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    .line 624
+    .line 627
     const-string v1, "text/plain"
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->setType(Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 625
+    .line 628
     return-object v0
 .end method
 
 .method public static setPreferredShareTarget(Landroid/content/Context;)Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
     .registers 6
 
-    .line 461
+    .line 464
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->isRunning()Z
 
     move-result v0
@@ -2165,7 +2167,7 @@
 
     if-nez v0, :cond_f
 
-    .line 462
+    .line 465
     new-instance p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
     const-string v0, "Shizuku \u672a\u8fd0\u884c"
@@ -2174,7 +2176,7 @@
 
     return-object p0
 
-    .line 464
+    .line 467
     :cond_f
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->hasPermission()Z
 
@@ -2182,7 +2184,7 @@
 
     if-nez v0, :cond_1d
 
-    .line 465
+    .line 468
     new-instance p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
     const-string v0, "\u5c1a\u672a\u6388\u6743"
@@ -2191,20 +2193,20 @@
 
     return-object p0
 
-    .line 468
+    .line 471
     :cond_1d
     invoke-static {p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->registerShareTargets(Landroid/content/Context;)Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;
 
     move-result-object v0
 
-    .line 469
+    .line 472
     invoke-virtual {v0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->anyOk()Z
 
     move-result v2
 
     invoke-static {p0, v2}, Lpub/chara/cwui/pretend_sharing/core/Prefs;->setTakeover(Landroid/content/Context;Z)V
 
-    .line 471
+    .line 474
     invoke-static {p0}, Lpub/chara/cwui/pretend_sharing/core/Prefs;->get(Landroid/content/Context;)Landroid/content/SharedPreferences;
 
     move-result-object p0
@@ -2213,7 +2215,7 @@
 
     move-result-object p0
 
-    .line 472
+    .line 475
     const-string v2, "takeover_scheme"
 
     invoke-virtual {v0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->allOk()Z
@@ -2222,7 +2224,7 @@
 
     invoke-interface {p0, v2, v3}, Landroid/content/SharedPreferences$Editor;->putBoolean(Ljava/lang/String;Z)Landroid/content/SharedPreferences$Editor;
 
-    .line 473
+    .line 476
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->shizukuUid()I
 
     move-result v2
@@ -2243,31 +2245,31 @@
 
     invoke-interface {p0, v4, v2}, Landroid/content/SharedPreferences$Editor;->putBoolean(Ljava/lang/String;Z)Landroid/content/SharedPreferences$Editor;
 
-    .line 474
+    .line 477
     invoke-interface {p0}, Landroid/content/SharedPreferences$Editor;->apply()V
 
-    .line 476
+    .line 479
     invoke-virtual {v0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->anyOk()Z
 
     move-result p0
 
     if-eqz p0, :cond_6b
 
-    .line 477
+    .line 480
     invoke-virtual {v0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->allOk()Z
 
     move-result p0
 
     if-eqz p0, :cond_5b
 
-    .line 478
+    .line 481
     const/4 p0, 0x0
 
     sput-object p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
     goto :goto_61
 
-    .line 480
+    .line 483
     :cond_5b
     invoke-virtual {v0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->summary()Ljava/lang/String;
 
@@ -2275,7 +2277,7 @@
 
     sput-object p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
-    .line 482
+    .line 485
     :goto_61
     new-instance p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
@@ -2287,7 +2289,7 @@
 
     return-object p0
 
-    .line 485
+    .line 488
     :cond_6b
     new-instance p0, Ljava/lang/StringBuilder;
 
@@ -2313,7 +2315,7 @@
 
     sput-object p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->lastError:Ljava/lang/String;
 
-    .line 486
+    .line 489
     new-instance p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;
 
     invoke-virtual {v0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->summary()Ljava/lang/String;
@@ -2328,7 +2330,7 @@
 .method public static shizukuUid()I
     .registers 4
 
-    .line 711
+    .line 714
     :try_start_0
     const-string v0, "rikka.shizuku.Shizuku"
 
@@ -2336,7 +2338,7 @@
 
     move-result-object v0
 
-    .line 712
+    .line 715
     const-string v1, "getUid"
 
     const/4 v2, 0x0
@@ -2347,7 +2349,7 @@
 
     move-result-object v0
 
-    .line 713
+    .line 716
     new-array v1, v2, [Ljava/lang/Object;
 
     const/4 v2, 0x0
@@ -2356,12 +2358,12 @@
 
     move-result-object v0
 
-    .line 714
+    .line 717
     instance-of v1, v0, Ljava/lang/Integer;
 
     if-eqz v1, :cond_21
 
-    .line 715
+    .line 718
     check-cast v0, Ljava/lang/Integer;
 
     invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
@@ -2372,15 +2374,15 @@
 
     return v0
 
-    .line 718
+    .line 721
     :cond_21
     goto :goto_23
 
-    .line 717
+    .line 720
     :catchall_22
     move-exception v0
 
-    .line 719
+    .line 722
     :goto_23
     const/4 v0, -0x1
 
@@ -2405,39 +2407,39 @@
         }
     .end annotation
 
-    .line 771
+    .line 774
     :try_start_0
     invoke-virtual {p1, p2, p4}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
 
     move-result-object p1
 
-    .line 772
+    .line 775
     invoke-virtual {p1, p0, p5}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
     :try_end_7
     .catchall {:try_start_0 .. :try_end_7} :catchall_9
 
-    .line 773
+    .line 776
     const/4 p0, 0x1
 
     return p0
 
-    .line 774
+    .line 777
     :catchall_9
     move-exception p0
 
-    .line 775
+    .line 778
     invoke-virtual {p3, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object p1
 
-    .line 776
+    .line 779
     const-string p2, " \u2192 "
 
     invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object p1
 
-    .line 777
+    .line 780
     invoke-static {p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->rootCause(Ljava/lang/Throwable;)Ljava/lang/String;
 
     move-result-object p0
@@ -2446,12 +2448,12 @@
 
     move-result-object p0
 
-    .line 778
+    .line 781
     const/16 p1, 0xa
 
     invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 779
+    .line 782
     const/4 p0, 0x0
 
     return p0
@@ -2460,19 +2462,19 @@
 .method public static uidLabel()Ljava/lang/String;
     .registers 3
 
-    .line 726
+    .line 729
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->shizukuUid()I
 
     move-result v0
 
-    .line 727
+    .line 730
     if-nez v0, :cond_9
 
     const-string v0, "root (uid 0)"
 
     return-object v0
 
-    .line 728
+    .line 731
     :cond_9
     const/16 v1, 0x7d0
 
@@ -2482,7 +2484,7 @@
 
     return-object v0
 
-    .line 729
+    .line 732
     :cond_10
     if-gez v0, :cond_15
 
@@ -2490,7 +2492,7 @@
 
     return-object v0
 
-    .line 730
+    .line 733
     :cond_15
     new-instance v1, Ljava/lang/StringBuilder;
 
@@ -2516,7 +2518,7 @@
 .method private static userId()I
     .registers 2
 
-    .line 739
+    .line 742
     invoke-static {}, Landroid/os/Process;->myUid()I
 
     move-result v0
@@ -2531,10 +2533,10 @@
 .method public static wechatProbe()Landroid/content/Intent;
     .registers 3
 
-    .line 614
+    .line 617
     new-instance v0, Landroid/content/Intent;
 
-    .line 615
+    .line 618
     const-string v1, "weixin://sendreq?appid=wx_probe"
 
     invoke-static {v1}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
@@ -2545,16 +2547,16 @@
 
     invoke-direct {v0, v2, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;Landroid/net/Uri;)V
 
-    .line 616
+    .line 619
     const-string v1, "android.intent.category.BROWSABLE"
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->addCategory(Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 617
+    .line 620
     const-string v1, "android.intent.category.DEFAULT"
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->addCategory(Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 618
+    .line 621
     return-object v0
 .end method

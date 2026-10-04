@@ -470,7 +470,7 @@
 
     invoke-direct {v1}, Landroid/content/Intent;-><init>()V
 
-    .line 333
+    .line 332
     invoke-virtual {p0}, Landroid/content/Context;->getPackageName()Ljava/lang/String;
 
     move-result-object v2
@@ -479,45 +479,45 @@
 
     invoke-virtual {v1, v2, v3}, Landroid/content/Intent;->setClassName(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 336
+    .line 335
     const/high16 v2, 0x14010000
 
     invoke-virtual {v1, v2}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
-    .line 337
+    .line 336
     const-string v2, "ps_spec"
 
     invoke-virtual {v1, v2, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Bundle;)Landroid/content/Intent;
 
-    .line 338
+    .line 337
     const-string v0, "s_target"
 
     invoke-virtual {v1, v0, p1}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 339
+    .line 338
     const-string p1, "s_from"
 
     invoke-virtual {v1, p1, p2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 
-    .line 340
+    .line 339
     const-string p1, "s_intent"
 
     invoke-virtual {v1, p1, p3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
-    .line 343
+    .line 342
     :try_start_47
     invoke-virtual {p0, v1}, Landroid/content/Context;->startActivity(Landroid/content/Intent;)V
     :try_end_4a
     .catchall {:try_start_47 .. :try_end_4a} :catchall_4b
 
-    .line 348
+    .line 347
     goto :goto_64
 
-    .line 344
+    .line 343
     :catchall_4b
     move-exception p0
 
-    .line 347
+    .line 346
     new-instance p1, Ljava/lang/StringBuilder;
 
     invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
@@ -540,7 +540,7 @@
 
     invoke-static {p1, p0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 349
+    .line 348
     :goto_64
     return-void
 .end method

@@ -329,9 +329,8 @@ public final class ActivityWatch {
             spec.putInt("req", -1);
 
             Intent gate = new Intent();
-            // 不再硬编码包名：只换 classes.dex 的打包方式决定了 manifest 包名就是原版的
             gate.setClassName(ctx.getPackageName(),
-                    "pub.chara.cwui.pretend_sharing.ui.ShareGateActivity");
+                    ShizukuHelper.SHARE_GATE_CLASS);
             // FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_NO_ANIMATION
             gate.addFlags(0x14010000);
             gate.putExtra("ps_spec", spec);

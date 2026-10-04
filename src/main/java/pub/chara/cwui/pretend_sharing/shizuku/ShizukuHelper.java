@@ -41,6 +41,9 @@ public final class ShizukuHelper {
 
     // ---- Static constants --------------------------------------------------
 
+    /** Main gate activity class name. */
+    public static final String SHARE_GATE_CLASS =
+            "pub.chara.cwui.pretend_sharing.ui.ShareGateActivity";
     /** Gate activity class name for QQ share interception. */
     public static final String QQ_GATE_CLASS =
             "pub.chara.cwui.pretend_sharing.gate.QqGateActivity";
@@ -426,7 +429,7 @@ public final class ShizukuHelper {
             // some ROMs reject "*/*"
         }
         report.channels.add(register(ctx, fSend,
-                "pub.chara.cwui.pretend_sharing.ui.ShareGateActivity",
+                SHARE_GATE_CLASS,
                 "\u901a\u7528\u5206\u4eab(ACTION_SEND)"));
 
         // --- QQ mqqapi ---

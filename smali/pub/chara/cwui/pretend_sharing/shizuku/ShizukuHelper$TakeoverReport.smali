@@ -30,17 +30,17 @@
 .method public constructor <init>()V
     .registers 2
 
-    .line 136
+    .line 139
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 137
+    .line 140
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->channels:Ljava/util/List;
 
-    .line 138
+    .line 141
     return-void
 .end method
 
@@ -49,7 +49,7 @@
 .method public allOk()Z
     .registers 3
 
-    .line 150
+    .line 153
     iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->channels:Ljava/util/List;
 
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
@@ -69,7 +69,7 @@
 
     check-cast v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;
 
-    .line 151
+    .line 154
     iget-boolean v1, v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->ok:Z
 
     if-nez v1, :cond_18
@@ -78,11 +78,11 @@
 
     return v0
 
-    .line 152
+    .line 155
     :cond_18
     goto :goto_6
 
-    .line 153
+    .line 156
     :cond_19
     iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->channels:Ljava/util/List;
 
@@ -98,7 +98,7 @@
 .method public anyOk()Z
     .registers 3
 
-    .line 142
+    .line 145
     iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->channels:Ljava/util/List;
 
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
@@ -118,7 +118,7 @@
 
     check-cast v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;
 
-    .line 143
+    .line 146
     iget-boolean v1, v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->ok:Z
 
     if-eqz v1, :cond_18
@@ -127,11 +127,11 @@
 
     return v0
 
-    .line 144
+    .line 147
     :cond_18
     goto :goto_6
 
-    .line 145
+    .line 148
     :cond_19
     const/4 v0, 0x0
 
@@ -141,7 +141,7 @@
 .method public qqOk()Z
     .registers 5
 
-    .line 158
+    .line 161
     iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->channels:Ljava/util/List;
 
     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
@@ -161,7 +161,7 @@
 
     check-cast v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;
 
-    .line 159
+    .line 162
     iget-object v2, v1, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->name:Ljava/lang/String;
 
     const-string v3, "QQ"
@@ -180,11 +180,11 @@
 
     return v0
 
-    .line 160
+    .line 163
     :cond_22
     goto :goto_6
 
-    .line 161
+    .line 164
     :cond_23
     const/4 v0, 0x0
 
@@ -194,12 +194,12 @@
 .method public summary()Ljava/lang/String;
     .registers 5
 
-    .line 168
+    .line 171
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 169
+    .line 172
     iget-object v1, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$TakeoverReport;->channels:Ljava/util/List;
 
     invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
@@ -219,7 +219,7 @@
 
     check-cast v2, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;
 
-    .line 170
+    .line 173
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->length()I
 
     move-result v3
@@ -230,7 +230,7 @@
 
     invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
 
-    .line 171
+    .line 174
     :cond_22
     invoke-virtual {v2}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->label()Ljava/lang/String;
 
@@ -238,10 +238,10 @@
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 172
+    .line 175
     goto :goto_b
 
-    .line 173
+    .line 176
     :cond_2a
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 

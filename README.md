@@ -53,6 +53,8 @@ bash build.sh path/to/base.apk
 - `src/main/java/.../shizuku/` — 新加的 Java 源文件
   - `ActivityWatch.java` — 注册假 IActivityController，拦截分享
   - `ShizukuHelper.java` — 封装 Shizuku 调用
+- `stubs/` — Prefs / PsKeys 编译桩（只给 javac 用，最终走 smali）
+- `libs/` — shizuku-api.jar（编译期依赖，不编进 dex）
 - `patches/` — smali 补丁详情
 - `build.sh` — 构建脚本
 - `build.gradle` — 仅限 IDE 用，不参与实际编译

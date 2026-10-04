@@ -24,15 +24,15 @@
 .method public constructor <init>(ZLjava/lang/String;)V
     .registers 3
 
-    .line 84
+    .line 87
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 85
+    .line 88
     iput-boolean p1, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;->ok:Z
 
-    .line 86
+    .line 89
     iput-object p2, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Result;->message:Ljava/lang/String;
 
-    .line 87
+    .line 90
     return-void
 .end method

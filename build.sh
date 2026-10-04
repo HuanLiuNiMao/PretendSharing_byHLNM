@@ -63,7 +63,7 @@ echo "[1/6] Compiling Java sources..."
 
 JAVA_SRC="$PROJECT_DIR/src/main/java"
 CLASSPATH="$ANDROID_JAR:$PROJECT_DIR/libs/shizuku-api.jar"
-STUBS_DIR="$PROJECT_DIR/build-stubs"
+STUBS_DIR="$PROJECT_DIR/stubs"
 
 # Collect all .java files
 find "$JAVA_SRC" -name '*.java' > "$BUILD_DIR/sources.txt"

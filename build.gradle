@@ -1,0 +1,35 @@
+// PretendSharing Mod — 通过 Shizuku ActivityWatch 实现分享拦截
+// applicationId 已改为 pub.chara.cwui.pretendsharing.HLNMovo
+
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'pub.chara.cwui.pretendsharing.HLNMovo'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "pub.chara.cwui.pretendsharing.HLNMovo"
+        minSdk 24
+        targetSdk 34
+        versionCode 30
+        versionName "3.0.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    compileOnly files('libs/shizuku-api-13.5.4.jar')
+    compileOnly files('libs/xposed-api.jar')
+}

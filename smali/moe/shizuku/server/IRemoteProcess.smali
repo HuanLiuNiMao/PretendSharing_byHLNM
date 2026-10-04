@@ -1,0 +1,41 @@
+.class public interface abstract Lmoe/shizuku/server/IRemoteProcess;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Landroid/os/IInterface;
+
+
+# annotations
+.annotation system Ldalvik/annotation/MemberClasses;
+    value = {
+        Lmoe/shizuku/server/IRemoteProcess$Stub;,
+        Lmoe/shizuku/server/IRemoteProcess$Default;
+    }
+.end annotation
+
+
+# virtual methods
+.method public abstract alive()Z
+.end method
+
+.method public abstract destroy()V
+.end method
+
+.method public abstract exitValue()I
+.end method
+
+.method public abstract getErrorStream()Landroid/os/ParcelFileDescriptor;
+.end method
+
+.method public abstract getInputStream()Landroid/os/ParcelFileDescriptor;
+.end method
+
+.method public abstract getOutputStream()Landroid/os/ParcelFileDescriptor;
+.end method
+
+.method public abstract waitFor()I
+.end method
+
+.method public abstract waitForTimeout(JLjava/lang/String;)Z
+.end method

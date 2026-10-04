@@ -24,43 +24,45 @@
 
 
 # direct methods
-.method static bridge synthetic -$$Nest$fgetctx(Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;)Landroid/content/Context;
-    .registers 1
-
-    iget-object p0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->ctx:Landroid/content/Context;
-
-    return-object p0
-.end method
-
-.method static bridge synthetic -$$Nest$sfgetINSTANCE()Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;
-    .registers 1
-
-    sget-object v0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->INSTANCE:Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;
-
-    return-object v0
-.end method
-
 .method private constructor <init>(Landroid/content/Context;)V
     .registers 2
 
-    .line 67
+    .line 35
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 68
+    .line 36
     invoke-virtual {p1}, Landroid/content/Context;->getApplicationContext()Landroid/content/Context;
 
     move-result-object p1
 
     iput-object p1, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->ctx:Landroid/content/Context;
 
-    .line 69
+    .line 37
     return-void
+.end method
+
+.method static synthetic access$000()Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;
+    .registers 1
+
+    .line 26
+    sget-object v0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->INSTANCE:Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;
+
+    return-object v0
+.end method
+
+.method static synthetic access$100(Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;)Landroid/content/Context;
+    .registers 1
+
+    .line 26
+    iget-object p0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->ctx:Landroid/content/Context;
+
+    return-object p0
 .end method
 
 .method private doRegister()V
     .registers 11
 
-    .line 84
+    .line 85
     const-string v0, "ActivityWatch"
 
     iget-boolean v1, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->registered:Z
@@ -69,31 +71,31 @@
 
     return-void
 
-    .line 86
+    .line 88
     :cond_7
     :try_start_7
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->asActivityManager()Ljava/lang/Object;
 
     move-result-object v1
 
-    .line 87
+    .line 89
     if-nez v1, :cond_13
 
-    .line 88
+    .line 90
     const-string v1, "IActivityManager unavailable; will retry on binder ready"
 
     invoke-static {v0, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 89
+    .line 91
     return-void
 
-    .line 91
+    .line 94
     :cond_13
     new-instance v2, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch$Controller;
 
     invoke-direct {v2}, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch$Controller;-><init>()V
 
-    .line 94
+    .line 96
     invoke-virtual {v1}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
 
     move-result-object v3
@@ -120,41 +122,35 @@
 
     move-result-object v3
 
-    .line 96
+    .line 99
     new-array v4, v5, [Ljava/lang/Object;
 
     aput-object v2, v4, v8
 
-    invoke-static {v9}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
-
-    move-result-object v2
+    sget-object v2, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
 
     aput-object v2, v4, v9
 
     invoke-virtual {v3, v1, v4}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 97
+    .line 101
     iput-boolean v9, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->registered:Z
 
-    .line 98
+    .line 102
     const-string v1, "IActivityController registered via Shizuku"
 
     invoke-static {v0, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
-    :try_end_43
-    .catchall {:try_start_7 .. :try_end_43} :catchall_44
+    :try_end_41
+    .catchall {:try_start_7 .. :try_end_41} :catchall_42
 
-    .line 101
-    goto :goto_5f
+    .line 105
+    goto :goto_59
 
-    .line 99
-    :catchall_44
+    .line 103
+    :catchall_42
     move-exception v1
 
-    .line 100
-    invoke-static {v1}, Ljava/lang/String;->valueOf(Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v1
-
+    .line 104
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -165,7 +161,7 @@
 
     move-result-object v2
 
-    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     move-result-object v1
 
@@ -175,15 +171,15 @@
 
     invoke-static {v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 102
-    :goto_5f
+    .line 106
+    :goto_59
     return-void
 .end method
 
 .method public static get()Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;
     .registers 1
 
-    .line 52
+    .line 43
     sget-object v0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->INSTANCE:Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;
 
     return-object v0
@@ -192,39 +188,40 @@
 .method public static start(Landroid/content/Context;)V
     .registers 2
 
-    .line 59
+    .line 53
     sget-object v0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->INSTANCE:Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;
 
     if-eqz v0, :cond_5
 
     return-void
 
-    .line 60
+    .line 54
     :cond_5
     new-instance v0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;
 
     invoke-direct {v0, p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;-><init>(Landroid/content/Context;)V
 
+    .line 55
     sput-object v0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->INSTANCE:Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;
 
-    .line 61
+    .line 56
     invoke-direct {v0}, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->tryRegister()V
 
-    .line 62
+    .line 57
     return-void
 .end method
 
 .method private tryRegister()V
     .registers 2
 
-    .line 72
+    .line 67
     iget-boolean v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->registered:Z
 
     if-eqz v0, :cond_5
 
     return-void
 
-    .line 73
+    .line 68
     :cond_5
     iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->ctx:Landroid/content/Context;
 
@@ -236,7 +233,7 @@
 
     return-void
 
-    .line 74
+    .line 69
     :cond_e
     iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->ctx:Landroid/content/Context;
 
@@ -248,7 +245,7 @@
 
     return-void
 
-    .line 76
+    .line 71
     :cond_17
     invoke-static {}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->isRunning()Z
 
@@ -256,10 +253,10 @@
 
     if-nez v0, :cond_26
 
-    .line 77
-    new-instance v0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch$$ExternalSyntheticLambda0;
+    .line 72
+    new-instance v0, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch$1;
 
-    invoke-direct {v0, p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch$$ExternalSyntheticLambda0;-><init>(Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;)V
+    invoke-direct {v0, p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch$1;-><init>(Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;)V
 
     invoke-static {v0}, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper;->addBinderReceivedListener(Ljava/lang/Runnable;)Ljava/lang/Object;
 
@@ -279,8 +276,9 @@
 .method public onBinderReady()V
     .registers 1
 
-    .line 65
+    .line 61
     invoke-direct {p0}, Lpub/chara/cwui/pretend_sharing/shizuku/ActivityWatch;->doRegister()V
 
+    .line 62
     return-void
 .end method

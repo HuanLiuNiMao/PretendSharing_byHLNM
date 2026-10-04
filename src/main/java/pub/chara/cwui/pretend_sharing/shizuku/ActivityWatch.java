@@ -2,6 +2,7 @@ package pub.chara.cwui.pretend_sharing.shizuku;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Parcel;
@@ -68,8 +69,12 @@ public final class ActivityWatch {
         if (!Prefs.isShizukuMode(ctx)) return;
 
         if (!ShizukuHelper.isRunning()) {
-            ShizukuHelper.addBinderReceivedListener(
-                    new ActivityWatch$$ExternalSyntheticLambda0(this));
+            ShizukuHelper.addBinderReceivedListener(new Runnable() {
+                @Override
+                public void run() {
+                    ActivityWatch.this.onBinderReady();
+                }
+            });
             return;
         }
         doRegister();
@@ -242,7 +247,7 @@ public final class ActivityWatch {
             }
 
             // No auto-choice yet: show the gate and block the original share.
-            launchGate(aw.ctx, target, callingPackage);
+            launchGate(aw.ctx, target, callingPackage, intent);
 
             out.writeNoException();
             out.writeInt(0);   // suppress the source activity
@@ -303,29 +308,43 @@ public final class ActivityWatch {
         }
 
         /**
-         * Launches ShareGateActivity.  If {@link Context#startActivity}
-         * fails (e.g. permission denied from a system process) it falls back
-         * to a shell {@code am start} command executed through Shizuku.
+         * 打开 ShareGateActivity。
+         *
+         * <p>改用原版 LSPosed 走的 {@code ps_spec} Bundle 协议 —— ShareGateActivity
+         * 的 {@code parseIntent()} 里第一个读的就是它，所以这条路<b>不需要再改 smali</b>，
+         * 而且 gate 会把它当成「来自 hook 的分享」（fromHook=true），
+         * "真分享"能转发原始 Intent，"假装分享"走 TargetRegistry。</p>
+         *
+         * <p>同时把 s_target / s_from / s_intent 也放上：如果 smali 里那条新分支被保留，
+         * 它也只有在这种情况下才会被走到（ps_spec 为空时），届时也能拿到真正的分享 Intent，
+         * 而不是 gate 自己的启动 Intent。</p>
          */
-        private static void launchGate(Context ctx, String target, String from) {
-            Intent intent = new Intent();
-            intent.setClassName(
-                    "pub.chara.cwui.pretendsharing_xposed",
+        private static void launchGate(Context ctx, String target,
+                String from, Intent share) {
+            Bundle spec = new Bundle();
+            spec.putParcelable("intent", share);   // 被拦下的那条原分享 Intent
+            spec.putString("target", target);      // wechat / qq / weibo
+            spec.putString("from", from);          // 发起分享的包名
+            spec.putInt("form", 0);                // 0 = 直接 startActivity
+            spec.putInt("req", -1);
+
+            Intent gate = new Intent();
+            // 不再硬编码包名：只换 classes.dex 的打包方式决定了 manifest 包名就是原版的
+            gate.setClassName(ctx.getPackageName(),
                     "pub.chara.cwui.pretend_sharing.ui.ShareGateActivity");
             // FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_NO_ANIMATION
-            intent.addFlags(0x14010000);
-            intent.putExtra("target", target);
-            intent.putExtra("from", from);
+            gate.addFlags(0x14010000);
+            gate.putExtra("ps_spec", spec);
+            gate.putExtra("s_target", target);
+            gate.putExtra("s_from", from);
+            gate.putExtra("s_intent", share);
 
             try {
-                ctx.startActivity(intent);
-            } catch (Throwable ignored) {
-                String cmd = "am start -n pub.chara.cwui.pretendsharing_xposed/"
-                        + "pub.chara.cwui.pretend_sharing.ui.ShareGateActivity"
-                        + " --es target " + target
-                        + " --es from " + from
-                        + " -f 0x10000000";
-                ShizukuHelper.execShizuku(cmd);
+                ctx.startActivity(gate);
+            } catch (Throwable t) {
+                // 不再用 shell 命令兜底（那是绕过系统检查的旁路）。
+                // 失败就记日志 —— 上层已经返回 0 抑制了原分享，这里再静默就等于没反应。
+                Log.e(TAG, "launchGate failed: " + t);
             }
         }
     }

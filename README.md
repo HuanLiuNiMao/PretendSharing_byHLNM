@@ -2,7 +2,9 @@
 
 基于 chara 原作 [PretendSharing 3.0.0](https://bbs.binmt.cc/forum.php?mod=viewthread&tid=173902)，加了个 Shizuku 自动拦截，不用每次手动选分享菜单了。
 
-包名改成了 `pub.chara.cwui.pretendsharing.HLNMovo`，不会覆盖原版。
+包名已改为 `pub.chara.cwui.pretendsharing.HLNMovo`（与原版 `pub.chara.cwui.pretendsharing_xposed` 不同）。
+本版构建只替换 `classes.dex`，`AndroidManifest.xml` 不动，所以包名由基 APK 的 manifest 决定。
+和原版**可以共存**，但重签名后直接覆盖会报 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`。
 
 ---
 
@@ -41,7 +43,7 @@ bash build.sh path/to/base.apk
 2. d8 转 dex → baksmali 拆成 smali
 3. 合并进原始的 smali 树（覆盖 shizuku 包）
 4. smali 拼回 classes.dex
-5. 用 apk-repack 塞进 APK
+5. 用 zip 替换 classes.dex → zipalign → apksigner 签名
 
 编译完拿 MT 管理器签名就能装了。
 
@@ -59,11 +61,15 @@ bash build.sh path/to/base.apk
 
 就改了两处：
 
-**PsApp.smali** — `onCreate()` 屁股后面加了一行，启动时调 `ActivityWatch.start()`
+**PsApp.smali** — `onCreate()` 末尾加一行，启动时调 `ActivityWatch.start()`
+（这一处仍然需要）
 
 **ShareGateActivity.smali** — `parseIntent()` 里加了个 `cond_new_aw` 分支，检测 ActivityWatch 注入的 `s_target` extra，走一条新的假分享路径
 
 具体改动见 `patches/README.md`
+
+> 若已按 `fix_hlnm.py` 改成 `ps_spec` 协议，则 **ShareGateActivity 那处补丁可以撤掉** ——
+> `parseIntent()` 最先读的就是 `ps_spec`，走原版 LSPosed 同一条入口。
 
 ## 声明
 
@@ -72,3 +78,16 @@ bash build.sh path/to/base.apk
 原作者帖子：[MT 论坛 — 假装分享 3.0](https://bbs.binmt.cc/forum.php?mod=viewthread&tid=173902)
 
 有问题提 issue。
+
+---
+
+## 权限与隐私（补记）
+
+- 装上并授权 Shizuku，等于把这个 App 放进 **shell（uid 2000）或 root 的权限层**：
+  它能执行 `sh -c`、能改系统 preferred activity、能注册全局的 `IActivityController`。
+  用不用，先把这一条想清楚。
+- `ShareGateActivity` 的记录逻辑会把分享的 `EXTRA_TEXT` / `EXTRA_TITLE` 写进本地日志。
+  自动拦截打开之后，"你分享了什么"会被记下来 —— 建议默认关掉正文记录，或至少说明清楚。
+- 本仓库的 `src/main/java/.../shizuku/*.java` 是从 smali 反推整理的版本，不是当初编译出
+  那个 APK 的原始源码（`ActivityWatch$$ExternalSyntheticLambda0` 这种 d8 生成名还在里面）。
+  引用/二次修改前请知悉。

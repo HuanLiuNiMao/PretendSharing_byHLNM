@@ -527,12 +527,15 @@ public final class ShizukuHelper {
      * <p>
      * The command chain is:
      * <pre>
-     *   appops set PKG SYSTEM_ALERT_WINDOW allow;
      *   dumpsys deviceidle whitelist +PKG;
      *   cmd appops set PKG RUN_IN_BACKGROUND allow;
      *   cmd appops set PKG RUN_ANY_IN_BACKGROUND allow;
      *   echo DONE
      * </pre>
+     *
+     * <p><b>注：</b>已移除 {@code SYSTEM_ALERT_WINDOW allow}。
+     * 悬浮窗权限属高危能力，应用如需展示悬浮提示应走
+     * {@link android.provider.Settings#ACTION_MANAGE_OVERLAY_PERMISSION} 取得用户明确同意。</p>
      */
     public static Result relaxBackgroundRestrictions(Context ctx) {
         if (!isRunning()) {
@@ -544,8 +547,6 @@ public final class ShizukuHelper {
 
         String pn = ctx.getPackageName();
         String cmd = new StringBuilder()
-                .append("appops set ").append(pn)
-                .append(" SYSTEM_ALERT_WINDOW allow;")
                 .append("dumpsys deviceidle whitelist +").append(pn)
                 .append(";cmd appops set ").append(pn)
                 .append(" RUN_IN_BACKGROUND allow;")
@@ -562,20 +563,12 @@ public final class ShizukuHelper {
                     new String[]{"sh", "-c", cmd},
                     null,
                     null);
-            if (raw instanceof Process) {
-                Process p = (Process) raw;
-                long deadline = System.currentTimeMillis() + 5000L;
-                boolean exited = false;
-                while (!exited && System.currentTimeMillis() < deadline) {
-                    try {
-                        p.exitValue();
-                        exited = true;
-                    } catch (IllegalThreadStateException e) {
-                        Thread.sleep(100L);
-                    }
-                }
-                if (!exited) {
-                    p.destroy();
+            if (raw != null) {
+                try {
+                    // android.jar stub 缺 Process 方法，用反射避免编译期报错
+                    java.lang.reflect.Method wf = raw.getClass().getMethod("waitFor");
+                    wf.invoke(raw);
+                } catch (Exception ignored) {
                 }
             }
             return new Result(true, "ok");

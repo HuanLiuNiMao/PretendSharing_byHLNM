@@ -18,7 +18,7 @@
 
 
 # instance fields
-.field final synthetic val$r:Ljava/lang/Runnable;
+.field final synthetic val$callback:Ljava/lang/Runnable;
 
 
 # direct methods
@@ -30,8 +30,8 @@
         }
     .end annotation
 
-    .line 195
-    iput-object p1, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$1;->val$r:Ljava/lang/Runnable;
+    .line 286
+    iput-object p1, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$1;->val$callback:Ljava/lang/Runnable;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
@@ -43,14 +43,14 @@
 .method public onBinderReceived()V
     .registers 2
 
-    .line 198
-    iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$1;->val$r:Ljava/lang/Runnable;
+    .line 289
+    iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$1;->val$callback:Ljava/lang/Runnable;
 
     if-eqz v0, :cond_7
 
     invoke-interface {v0}, Ljava/lang/Runnable;->run()V
 
-    .line 199
+    .line 290
     :cond_7
     return-void
 .end method

@@ -26,19 +26,19 @@
 .method public constructor <init>(Ljava/lang/String;ZLjava/lang/String;)V
     .registers 4
 
-    .line 251
+    .line 103
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 252
+    .line 104
     iput-object p1, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->name:Ljava/lang/String;
 
-    .line 253
+    .line 105
     iput-boolean p2, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->ok:Z
 
-    .line 254
+    .line 106
     iput-object p3, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->error:Ljava/lang/String;
 
-    .line 255
+    .line 107
     return-void
 .end method
 
@@ -47,18 +47,19 @@
 .method public label()Ljava/lang/String;
     .registers 4
 
-    .line 258
+    .line 116
     iget-boolean v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->ok:Z
 
     if-eqz v0, :cond_1a
 
-    iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->name:Ljava/lang/String;
+    .line 117
+    new-instance v0, Ljava/lang/StringBuilder;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    iget-object v1, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->name:Ljava/lang/String;
 
-    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v0
 
@@ -74,32 +75,36 @@
 
     return-object v0
 
-    .line 259
+    .line 119
     :cond_1a
-    iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->name:Ljava/lang/String;
+    iget-object v0, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->error:Ljava/lang/String;
 
-    iget-object v1, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->error:Ljava/lang/String;
+    if-eqz v0, :cond_1f
 
-    if-nez v1, :cond_22
+    goto :goto_21
 
-    const-string v1, "\u672a\u77e5"
+    :cond_1f
+    const-string v0, "\u672a\u77e5"
 
-    :cond_22
-    new-instance v2, Ljava/lang/StringBuilder;
+    .line 120
+    :goto_21
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    iget-object v2, p0, Lpub/chara/cwui/pretend_sharing/shizuku/ShizukuHelper$Channel;->name:Ljava/lang/String;
 
-    move-result-object v0
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
 
     const-string v2, "\uff1a\u5931\u8d25\uff08"
 
-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v0
+    move-result-object v1
 
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v0
 

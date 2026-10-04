@@ -6,3 +6,6 @@ local.properties
 .idea/
 *.iml
 .DS_Store
+*.bak
+fix_hlnm.py
+HLNM-fix-prompt.md

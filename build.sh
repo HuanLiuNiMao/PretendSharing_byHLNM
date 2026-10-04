@@ -10,14 +10,19 @@ set -euo pipefail
 #   3. Decompile .dex → .smali with baksmali
 #   4. Merge new smali into the original smali tree
 #   5. Assemble final classes.dex with smali
-#   6. Pack into APK with apk-repack
+#   6. Pack into APK with zip
 # ─────────────────────────────────────────────────────────────────────
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$SCRIPT_DIR"
 
-# Source the toolchain environment
-source /sdcard/DeepSeekHarness/Tools/env.sh
+# 工具链环境：默认不依赖任何固定路径。
+# 需要额外 PATH / ANDROID_JAR 时，用 TOOLS_ENV 指一个脚本进来。
+if [ -n "${TOOLS_ENV:-}" ] && [ -f "$TOOLS_ENV" ]; then
+    . "$TOOLS_ENV"
+fi
+# env.sh 的 alias 依赖 $ROOT（可能未设），直接加 /root/bin 到 PATH
+export PATH="/root/bin:$PATH"
 
 # ── Arguments ────────────────────────────────────────────────────────
 BASE_APK="${1:-$PROJECT_DIR/base.apk}"
@@ -44,12 +49,21 @@ echo "============================================"
 rm -rf "$BUILD_DIR"
 mkdir -p "$CLASSES_DIR" "$DEX_DIR" "$NEW_SMALI_DIR"
 
+# ── 依赖自检（缺东西就现在报，别等 javac 报一堆 import 错）─────
+if [ ! -f "$PROJECT_DIR/libs/shizuku-api.jar" ]; then
+    echo "ERROR: 缺少 $PROJECT_DIR/libs/shizuku-api.jar"
+    echo "       可从 Shizuku-API GitHub Releases 获取，或从已安装 App 提取。"
+    echo "       （只在 javac -cp 里用，不要编进 dex）"
+    exit 1
+fi
+
 # ── Step 1: Compile Java sources ────────────────────────────────────
 echo ""
 echo "[1/6] Compiling Java sources..."
 
 JAVA_SRC="$PROJECT_DIR/src/main/java"
-CLASSPATH="$ANDROID_JAR:$PROJECT_DIR/libs/shizuku-api.jar:$PROJECT_DIR/libs/xposed-api.jar"
+CLASSPATH="$ANDROID_JAR:$PROJECT_DIR/libs/shizuku-api.jar"
+STUBS_DIR="$PROJECT_DIR/build-stubs"
 
 # Collect all .java files
 find "$JAVA_SRC" -name '*.java' > "$BUILD_DIR/sources.txt"
@@ -61,11 +75,15 @@ if [ "$SRC_COUNT" -eq 0 ]; then
 else
     echo "  Found $SRC_COUNT Java source file(s)"
     echo "  Classpath: $CLASSPATH"
+    # Compile stubs first so Prefs/PsKeys are available
+    STUB_SRC="$BUILD_DIR/build-stubs/pub/chara/cwui/pretend_sharing/core"
+    mkdir -p "$STUB_SRC"
+    cp "$STUBS_DIR/pub/chara/cwui/pretend_sharing/core/"*.java "$STUB_SRC/"
+    find "$STUBS_DIR" -name '*.java' >> "$BUILD_DIR/sources.txt"
     javac \
         -d "$CLASSES_DIR" \
         -cp "$CLASSPATH" \
-        -source 1.8 \
-        -target 1.8 \
+        --release 8 \
         @"$BUILD_DIR/sources.txt"
     echo "  → Compiled $(find "$CLASSES_DIR" -name '*.class' | wc -l) .class files"
 fi
@@ -77,7 +95,7 @@ echo "[2/6] Converting .class to .dex (d8)..."
 if [ -n "$(find "$CLASSES_DIR" -name '*.class' 2>/dev/null)" ]; then
     d8 \
         --lib "$ANDROID_JAR" \
-        --classpath "$PROJECT_DIR/libs/shizuku-api.jar:$PROJECT_DIR/libs/xposed-api.jar" \
+        --classpath "$PROJECT_DIR/libs/shizuku-api.jar" \
         --output "$DEX_DIR" \
         $(find "$CLASSES_DIR" -name '*.class' | tr '\n' ' ')
     echo "  → DEX produced"
@@ -122,9 +140,35 @@ echo "  → classes.dex assembled ($DEX_SIZE bytes)"
 
 # ── Step 6: Pack into APK ───────────────────────────────────────────
 echo ""
-echo "[6/6] Packing APK with apk-repack..."
+echo "[6/6] Packing APK with zip..."
 
-apk-repack --dex-only "$BASE_APK" "$FINAL_DEX" "$OUTPUT_APK"
+# 用标准工具替换 classes.dex（等价于 --dex-only，但不依赖私有工具）
+command -v zip >/dev/null 2>&1 || { echo "ERROR: 需要 zip"; exit 1; }
+cp -f "$BASE_APK" "$OUTPUT_APK"
+( cd "$BUILD_DIR" && zip -q "$OUTPUT_APK" classes.dex )
+echo "  → 已替换 classes.dex"
+
+ALIGNED="$OUTPUT_APK"
+if command -v zipalign >/dev/null 2>&1; then
+    ALIGNED="$PROJECT_DIR/patched-aligned.apk"
+    zipalign -f -p 4 "$OUTPUT_APK" "$ALIGNED"
+    echo "  → 已对齐：$ALIGNED"
+fi
+
+if [ -n "${KEYSTORE:-}" ] && command -v apksigner >/dev/null 2>&1; then
+    SIGNED="$PROJECT_DIR/patched-signed.apk"
+    if [ -n "${KSPASS:-}" ]; then
+        apksigner sign --ks "$KEYSTORE" --ks-pass "pass:$KSPASS" \
+            --out "$SIGNED" "$ALIGNED"
+    else
+        apksigner sign --ks "$KEYSTORE" --out "$SIGNED" "$ALIGNED"
+    fi
+    echo "  → 已签名：$SIGNED"
+    apksigner verify --print-certs "$SIGNED" | head -3
+else
+    echo "  ! 未签名。设 KEYSTORE=/path/xx.keystore（可选 KSPASS=…）可自动签，"
+    echo "    或者拿 MT 管理器手动签 —— 但那样就没人能复现你的产物。"
+fi
 echo "  → Output: $OUTPUT_APK"
 
 echo ""
